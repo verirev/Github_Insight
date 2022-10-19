@@ -27,6 +27,9 @@ def time_bool_check(i:dict, start_time:datetime, end_time:datetime):
     _updated_at = i.get('updated_at', time_now_iso)
     _closed_at = i.get('closed_at', time_now_iso)
     _merged_at = i.get('merged_at', time_now_iso)
+    _updated_at = time_now_iso if bool(_updated_at) == False else _updated_at
+    _closed_at = time_now_iso if bool(_closed_at) == False else _closed_at
+    _merged_at = time_now_iso if bool(_merged_at) == False else _merged_at
     created_at = datetime.strptime(_created_at, '%Y-%m-%dT%H:%M:%SZ')
     updated_at = datetime.strptime(_updated_at, '%Y-%m-%dT%H:%M:%SZ')
     closed_at = datetime.strptime(_closed_at, '%Y-%m-%dT%H:%M:%SZ')
@@ -111,3 +114,5 @@ def save_pull_history(repo_owner_username, repo_name, start_time:datetime, end_t
             output_list.append(single_list)
     output_list.insert(0,['Repository', 'Repo Author', 'Pull Title', 'Pull URL',  'Pull ID', 'User', 'STAT', 'Diff URL', 'Patch URL', 'Issue URL', 'Pull Body', 'Head Label', 'Head SHA', 'Base Label', 'Base SHA', 'Created at', 'Updated at', 'Closed at', 'Merged at'])
     pe.save_as(array=output_list, dest_file_name=f'Pull-{repo_name}-{start_time}-{end_time}.xlsx')
+
+# save_pull_history('d3plus','d3plus', datetime.now()-timedelta(days=400), datetime.now()-timedelta(days=7))
